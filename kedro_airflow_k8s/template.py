@@ -3,8 +3,8 @@ from pathlib import Path
 from typing import Dict, Optional
 
 import jinja2
-import kedro
 from jinja2.environment import TemplateStream
+from kedro.config import MissingConfigException
 from slugify import slugify
 
 from kedro_airflow_k8s import version
@@ -24,7 +24,7 @@ def get_mlflow_url(context_helper):
 
         importlib.import_module("kedro_mlflow")
         return context_helper.mlflow_config["mlflow_tracking_uri"]
-    except (ModuleNotFoundError, kedro.config.config.MissingConfigException):
+    except (ModuleNotFoundError, MissingConfigException):
         return None
 
 
