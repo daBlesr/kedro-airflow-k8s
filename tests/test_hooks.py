@@ -2,7 +2,7 @@ import os
 import unittest
 from contextlib import contextmanager
 
-from kedro_airflow_k8s.hooks import RegisterTemplatedConfigLoaderHook
+from kedro_airflow_k8s.default_config_loader import KedroAirflowK8sConfigLoader
 
 
 @contextmanager
@@ -16,10 +16,8 @@ def environment(env):
 class TestRegisterTemplatedConfigLoaderHook(unittest.TestCase):
     @staticmethod
     def get_config():
-        config_path = [os.path.dirname(os.path.abspath(__file__))]
-        loader = RegisterTemplatedConfigLoaderHook().register_config_loader(
-            conf_paths=config_path
-        )
+        config_path = os.path.dirname(os.path.abspath(__file__))
+        loader = KedroAirflowK8sConfigLoader(conf_source=config_path)
         return loader.get("test_config.yml")
 
     def test_loader_with_defaults(self):
